@@ -1,3 +1,11 @@
 {
-    "name": "@staytuned/jsr-packages"
+  "name": "@staytuned/jsr-packages",
+  "version": "1.0.0",
+  "exports": "./mod.ts",
+  "tasks": {
+    "test": "deno test"
+  },
+  "workspace": [
+    "deno-dag-test"
+  ]
 }

@@ -1,7 +1,7 @@
 export {
-  checkStagedImpactedTests,
+  checkStagedDagTests,
   type TestCheckerConfig,
-} from "./test_checker.ts";
-export { ImpactedTestAnalyzer } from "./dependencyAnalyzer.ts";
+} from "./stagedDagTestRunner.ts";
+export { DagTestAnalyzer } from "./dagAnalyzer.ts";
 export { getStagedFiles } from "./utils/gitUtils.ts";
 export { runTests } from "./utils/testRunner.ts";

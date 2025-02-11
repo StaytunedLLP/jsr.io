@@ -1,12 +1,12 @@
 /**
- * Module for analyzing dependencies between TypeScript files and finding impacted test files.
+ * Module for analyzing dependencies between TypeScript files and finding dag test files.
  * This module provides functionality to analyze dependency relationships and identify test files
  * that need to be run based on changes to source files.
  *
  * @example
  * ```typescript
  * // Initialize the analyzer with source directories
- * const analyzer = new ImpactedTestAnalyzer(['src/domain', 'src/api']);
+ * const analyzer = new DagTestAnalyzer(['src/domain', 'src/api']);
  *
  * // Get test files impacted by changes
  * const result = await analyzer.getRelatedTestFiles(['src/domain/user/userService.ts']);
@@ -78,19 +78,19 @@ import { walk } from "@std/fs";
  * Uses Deno's module graph to build a dependency map and track relationships
  * between source and test files.
  */
-export class ImpactedTestAnalyzer {
+export class DagTestAnalyzer {
   private readonly dependencyMap: Map<string, DependencyNode> = new Map();
   private readonly initializationPromise: Promise<Result<void, Error>>;
   private readonly baseDir: string;
 
   /**
-   * Creates an instance of ImpactedTestAnalyzer.
+   * Creates an instance of DagTestAnalyzer.
    *
    * @param entryPoints - Array of entry point directories or files to analyze
    *
    * @example
    * ```typescript
-   * const analyzer = new ImpactedTestAnalyzer(['src/domain', 'src/api']);
+   * const analyzer = new DagTestAnalyzer(['src/domain', 'src/api']);
    * ```
    */
   constructor(entryPoints: ReadonlyArray<string>) {
@@ -134,7 +134,7 @@ export class ImpactedTestAnalyzer {
 
       this.buildDependencyMap(graphResult.value);
 
-      console.log("ImpactedTestAnalyzer initialized successfully.");
+      console.log("DagTestAnalyzer initialized successfully.");
       return { ok: true, value: void 0 };
     } catch (error) {
       return {
@@ -230,12 +230,12 @@ export class ImpactedTestAnalyzer {
       if (module.local) {
         const relativeModulePath = relative(this.baseDir, module.local);
         if (!this.dependencyMap.has(relativeModulePath)) {
-          const isTestFile = ImpactedTestAnalyzer.isTestFile(
+          const isTestFile = DagTestAnalyzer.isTestFile(
             relativeModulePath,
           );
           this.dependencyMap.set(
             relativeModulePath,
-            ImpactedTestAnalyzer.createDependencyNode(
+            DagTestAnalyzer.createDependencyNode(
               module.specifier,
               relativeModulePath,
               isTestFile,
@@ -325,7 +325,7 @@ export class ImpactedTestAnalyzer {
 
       await Promise.all(
         dependentsResult.value.map(async (dependent) => {
-          if (ImpactedTestAnalyzer.isTestFile(dependent)) {
+          if (DagTestAnalyzer.isTestFile(dependent)) {
             testFiles.add(dependent);
           } else {
             await collectDependents(dependent);

@@ -1,0 +1,13 @@
+{
+  "name": "@staytuned/deno-dag-test",
+  "version": "0.2.0",
+  "license": "MIT",
+  "exports": "./mod.ts",
+  "imports": {
+    "@std/fs": "jsr:@std/fs",
+    "@std/http": "jsr:@std/http",
+    "@std/path": "jsr:@std/path",
+    "@std/testing": "jsr:@std/testing",
+    "@std/assert": "jsr:@std/assert"
+  }
+}

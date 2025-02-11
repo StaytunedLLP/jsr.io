@@ -1,12 +1,12 @@
 /**
  * Module for checking and running tests impacted by staged changes in Git.
  * This module integrates with Git to identify staged files and runs relevant tests
- * using the ImpactedTestAnalyzer.
+ * using the DagTestAnalyzer.
  *
  * @example
  * ```typescript
  * // Run tests for staged files
- * const result = await checkStagedImpactedTests({
+ * const result = await checkStagedDagTests({
  *   baseFolders: ['src/domain', 'src/api'],
  *   testTask: 'test',
  *   testFlags: ['--allow-all']
@@ -25,9 +25,11 @@
  * ```
  */
 
-import { getStagedFiles } from "./utils/gitUtils.ts";
-import { runTests } from "./utils/testRunner.ts";
-import { ImpactedTestAnalyzer } from "./dependencyAnalyzer.ts";
+import {
+  DagTestAnalyzer,
+  getStagedFiles,
+  runTests,
+} from "@staytuned/deno-dag-test";
 
 //#region Types
 /**
@@ -47,7 +49,7 @@ type Result<T, E = Error> = { ok: true; value: T } | { ok: false; error: E };
 
 //#region Main Function
 /**
- * Checks staged files and runs impacted tests.
+ * Checks staged files and runs dag tests.
  *
  * @param config - Test checker configuration
  * @returns Promise resolving to a Result indicating success or failure
@@ -55,7 +57,7 @@ type Result<T, E = Error> = { ok: true; value: T } | { ok: false; error: E };
  * @example
  * ```typescript
  * // Run tests for staged files
- * const result = await checkStagedImpactedTests({
+ * const result = await checkStagedDagTests({
  *   baseFolders: ['src/domain', 'src/api'],
  *   testTask: 'test',
  *   testFlags: ['--allow-all']
@@ -67,7 +69,7 @@ type Result<T, E = Error> = { ok: true; value: T } | { ok: false; error: E };
  * }
  * ```
  */
-export const checkStagedImpactedTests = async (
+export const checkStagedDagTests = async (
   config: TestCheckerConfig,
 ): Promise<Result<void, Error>> => {
   try {
@@ -79,7 +81,7 @@ export const checkStagedImpactedTests = async (
       return { ok: true, value: undefined };
     }
 
-    const analyzer = new ImpactedTestAnalyzer(config.baseFolders);
+    const analyzer = new DagTestAnalyzer(config.baseFolders);
 
     const normalizedStagedFiles = stagedFiles.map((file) => {
       const currentFolder = currentWorkingDirectory.split("/").pop();
@@ -88,7 +90,7 @@ export const checkStagedImpactedTests = async (
       return index === -1 ? file : fileParts.slice(index + 1).join("/");
     });
 
-    const impactedTestFilesResult = await analyzer.getRelatedTestFiles(
+    const impactedTestFilesResult = await analyzer.getRelatedTestFiles( // Note: Keeping `getRelatedTestFiles` as it refers to test files, not the analyzer itself.
       normalizedStagedFiles,
     );
     if (!impactedTestFilesResult.ok) {
@@ -126,7 +128,7 @@ if (import.meta.main) {
   }
 
   const baseFolders = baseFoldersArg.split(",");
-  const result = await checkStagedImpactedTests({
+  const result = await checkStagedDagTests({
     baseFolders,
     testTask,
     testFlags,
