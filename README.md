@@ -1,8 +1,8 @@
-# Deno Package Collection
+# Staytuned Deno Package Collection
 
-Welcome to the Deno Package Collection!
+Welcome to the Staytuned Deno Package Collection!
 
-This repository is a collection of Deno modules and utilities designed to enhance your Deno development experience.  We aim to provide high-quality, reusable packages that address common needs in Deno projects, promoting efficiency and best practices.
+This repository is a collection of Deno modules and utilities designed to enhance your Deno development experience. We aim to provide high-quality, reusable packages that address common needs in Deno projects, promoting efficiency and best practices.
 
 ## Modules
 
@@ -35,19 +35,10 @@ import { checkStagedDagTests } from "jsr:@staytuned/deno-dag-test";
 
 Refer to each module's individual `Readme.md` for detailed usage instructions, API documentation, and examples.
 
-## Contributing
-
-We welcome contributions to this Deno Package Collection! If you have ideas for new modules, improvements to existing ones, or bug fixes, please feel free to:
-
-1. Fork the repository.
-2. Create a new branch for your feature or fix.
-3. Make your changes and ensure tests pass.
-4. Submit a pull request with a clear description of your changes.
-
 ## License
 
 This project is licensed under the [MIT License](./LICENSE).
 
 ---
 
-Thank you for exploring the Deno Package Collection. We hope these modules are valuable to your Deno projects!
+Thank you for exploring the Staytuned Deno Package Collection. We hope these modules are valuable to your Deno projects!
