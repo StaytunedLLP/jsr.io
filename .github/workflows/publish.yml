@@ -1,3 +1,5 @@
+# .github/workflows/publish.yml
+
 name: Publish
 
 on:
@@ -13,39 +15,7 @@ jobs:
       id-token: write # The OIDC ID token is used for authentication with JSR.
     steps:
       - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0 # Fetch full history to access HEAD^
-
       - uses: denoland/setup-deno@v1
         with:
           deno-version: "2.x"
-
-      - name: Get module directory
-        id: get_module_dir
-        run: |
-          # Assumes workflow file is in .github/workflows and module is in the repository root
-          MODULE_DIR=$(basename $(pwd)/../..) # Navigate up two levels from .github/workflows
-          echo "MODULE_DIRECTORY=$MODULE_DIR" >> $GITHUB_OUTPUT
-
-      - name: Check for deno.json changes
-        id: check_deno_json_change
-        run: |
-          MODULE_DIR="${{ steps.get_module_dir.outputs.MODULE_DIRECTORY }}"
-          cd "$MODULE_DIR"
-
-          # Check if deno.json file was modified in the commit
-          if git diff --name-only HEAD^ HEAD | grep -q 'deno.json'; then
-            echo "deno.json file was modified in module '$MODULE_DIR'. Proceeding with publish."
-            echo "PUBLISH_REQUIRED=true" >> $GITHUB_OUTPUT
-          else
-            echo "deno.json file was not modified in module '$MODULE_DIR'. Skipping publish."
-            echo "PUBLISH_REQUIRED=false" >> $GITHUB_OUTPUT
-            exit 0
-          fi
-
-      - name: Publish if deno.json changed
-        if: steps.check_deno_json_change.outputs.PUBLISH_REQUIRED == 'true'
-        run: |
-          MODULE_DIR="${{ steps.get_module_dir.outputs.MODULE_DIRECTORY }}"
-          cd "$MODULE_DIR"
-          deno publish
+      - run: cd deno-dag-test && deno publish
