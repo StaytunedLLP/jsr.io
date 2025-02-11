@@ -5,8 +5,8 @@
   "exports": "./mod.ts",
   "imports": {
     "@std/fs": "jsr:@std/fs",
-    "@std/http": "jsr:@std/http",
     "@std/path": "jsr:@std/path",
+    "@std/http": "jsr:@std/http",
     "@std/testing": "jsr:@std/testing",
     "@std/assert": "jsr:@std/assert"
   }
