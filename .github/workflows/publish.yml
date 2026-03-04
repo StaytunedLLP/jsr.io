@@ -9,7 +9,7 @@ on:
 
 jobs:
   publish:
-    runs-on: ubuntu-latest
+    runs-on: st-arc
     permissions:
       contents: read
       id-token: write # The OIDC ID token is used for authentication with JSR.
